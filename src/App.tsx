@@ -1,26 +1,38 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import AddNotes from "./components/AddNotes";
+import Card from "./components/Card";
+import NavBar from "./layout/NavBar";
+import { useState } from "react";
+import Footer from "./layout/Footer";
+const App = () => {
+  const [data, setData] = useState<any>([]);
 
-function App() {
+  const addNote = (note: any) => {
+    setData([...data, note]);
+  };
+
+  const deleteNote = (id: string) => {
+    setData(data.filter((note: { title: string }) => note.title !== id));
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <NavBar />
+      <AddNotes addNote={addNote} />
+      <div className="card lg:card-side  flex justify-around flex-wrap">
+        {data.map((note: any, index: number) => {
+          return (
+            <Card
+              key={index}
+              id={note.title}
+              data={note}
+              deleteNote={deleteNote}
+            />
+          );
+        })}
+      </div>
+      <Footer />
+    </>
   );
-}
+};
 
 export default App;
